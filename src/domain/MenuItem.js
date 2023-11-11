@@ -51,6 +51,8 @@ class MenuItem {
     return this.#menu;
   }
 
+  // =======================================================================================
+
   /**
    *
    * @param {string} input
@@ -59,8 +61,8 @@ class MenuItem {
   #convertInput(input) {
     // ['메뉴','1'] -> 형식 검증에서 수량이 무조건 숫자인 것을 검증
     const chunks = input.split("-");
-    const menuName = chunks[0];
-    const quantity = Number(chunks[1]);
+    const menuName = chunks[0]; // '레드와인
+    const quantity = Number(chunks[1]); // 2
     this.#validateQuantity(quantity);
     this.#validateMenuName(menuName);
     const menu = Menu[menuName];
