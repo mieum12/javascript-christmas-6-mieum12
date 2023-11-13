@@ -1,4 +1,5 @@
 import { Console } from "@woowacourse/mission-utils";
+
 const OutputView = {
   /**
    *
@@ -8,8 +9,8 @@ const OutputView = {
     this.printDay(orderDto);
     this.printAllMenus(orderDto);
     this.printTotalPrice(orderDto);
-    this.printReward(orderDto);
-    this.printDiscountDetail(orderDto);
+    this.printRewardItem(orderDto);
+    this.printRewardDetail(orderDto);
     this.printTotalRewardPrice(orderDto);
     this.printFinalPayment(orderDto);
     this.printEventBadge(orderDto);
@@ -30,13 +31,13 @@ const OutputView = {
     Console.print(`\n<할인 전 총주문 금액>`);
     Console.print(`${orderDto.priceDetail.totalPrice}원`);
   },
-  printReward(orderDto) {
+  printRewardItem(orderDto) {
     Console.print(`\n<증정 메뉴>`);
     Console.print(
       `${orderDto.rewardItem.name} ${orderDto.rewardItem.quantity}개`,
     );
   },
-  printDiscountDetail(orderDto) {
+  printRewardDetail(orderDto) {
     Console.print(`\n<혜택 내역>`);
     const detailArray = [
       `크리스마스 디데이 할인: -${orderDto.rewardDetail.dDayDiscountPrice}원`,
@@ -45,11 +46,12 @@ const OutputView = {
       `특별 할인: -${orderDto.rewardDetail.starDayDiscountPrice}원`,
       `증정 이벤트: -${orderDto.rewardDetail.giftEventPrice}원`,
     ];
-    detailArray.filter((d) => {
-      if (!d.includes("-0원")) {
-        Console.print(d);
-      }
-    });
+    const resultArray = detailArray.filter((d) => !d.includes("-0원"));
+    if (resultArray.length > 0) {
+      resultArray.forEach((d) => Console.print(d));
+    } else {
+      Console.print("없음");
+    }
   },
 
   printTotalRewardPrice(orderDto) {
@@ -69,4 +71,5 @@ const OutputView = {
     Console.print(orderDto.eventBadge.name);
   },
 };
+
 export default OutputView;
