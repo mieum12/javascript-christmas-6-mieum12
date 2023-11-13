@@ -38,18 +38,14 @@ const OutputView = {
   },
   printDiscountDetail(orderDto) {
     Console.print(`\n<혜택 내역>`);
-    const detail = orderDto.rewardDetail;
-
     const detailArray = [
-      `크리스마스 디데이 할인: -${detail.dDayDiscountPrice}원`,
-      `평일 할인: -${detail.weekdayDiscountPrice}원`,
-      `주말 할인: -${detail.weekendDiscountPrice}원`,
-      `특별 할인: -${detail.starDayDiscountPrice}원`,
-      `증정 이벤트: -${detail.giftEventPrice}원`,
+      `크리스마스 디데이 할인: -${orderDto.rewardDetail.dDayDiscountPrice}원`,
+      `평일 할인: -${orderDto.rewardDetail.weekdayDiscountPrice}원`,
+      `주말 할인: -${orderDto.rewardDetail.weekendDiscountPrice}원`,
+      `특별 할인: -${orderDto.rewardDetail.starDayDiscountPrice}원`,
+      `증정 이벤트: -${orderDto.rewardDetail.giftEventPrice}원`,
     ];
-
     detailArray.filter((d) => {
-      // -0원이 아니면 출력하기!
       if (!d.includes("-0원")) {
         Console.print(d);
       }
@@ -57,17 +53,20 @@ const OutputView = {
   },
 
   printTotalRewardPrice(orderDto) {
-    Console.print(
-      `\n<총혜택 금액>\n${orderDto.priceDetail.totalRewardPrice}원`,
-    );
+    Console.print("\n<총혜택 금액>");
+    Console.print(`${orderDto.rewardDetail.totalRewardPrice}원`);
   },
   printFinalPayment(orderDto) {
+    Console.print("\n<할인 후 예상 결제 금액>");
     Console.print(
-      `\n<할인 후 예상 결제 금액>\n${orderDto.priceDetail.finalPayment}원`,
+      `${
+        orderDto.priceDetail.totalPrice - orderDto.rewardDetail.totalRewardPrice
+      }원`,
     );
   },
   printEventBadge(orderDto) {
-    Console.print(`\n<12월 이벤트 배지>\n${orderDto.eventBadge.name}`);
+    Console.print("\n<12월 이벤트 배지>");
+    Console.print(orderDto.eventBadge.name);
   },
 };
 export default OutputView;
