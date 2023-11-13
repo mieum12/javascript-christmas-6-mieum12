@@ -1,7 +1,5 @@
 import RewardDetailDto from "./dto/RewardDetailDto.js";
 import MenuCategory from "./MenuCategory.js";
-import rewardDetail from "./RewardDetail.js";
-
 /**
  * @description 할인과 관련된 데이터(5가지 할인)를 갖고있는 클래스
  */
@@ -140,40 +138,34 @@ class RewardDetail {
    * @description 총 혜택 금액을 계산하는 함수
    */
   calculateTotalRewardPrice() {
-    this.#totalRewardPrice =
+    return (this.#totalRewardPrice =
       this.#weekdayDiscountPrice +
       this.#weekendDiscountPrice +
       this.#starDayDiscountPrice +
       this.#dDayDiscountPrice +
-      this.#giftEventPrice;
+      this.#giftEventPrice);
   }
 
+  /**
+   *
+   * @return {number}
+   */
   get totalRewardPrice() {
     return this.#totalRewardPrice;
   }
-
-  // get totalRewardPrice() {
-  //   this.#totalRewardPrice =
-  //     this.#weekdayDiscountPrice +
-  //     this.#weekendDiscountPrice +
-  //     this.#starDayDiscountPrice +
-  //     this.#dDayDiscountPrice +
-  //     this.#giftEventPrice;
-  // }
 
   /**
    * @return {RewardDetailDto}
    * @description OrderDto에 전달할 (메뉴dto,혜택dto,금액dto) 중 하나인 혜택 DTO다
    */
   makeRewardDetailDto() {
-    console.log(666666, "총혜택", this.#totalRewardPrice);
     return new RewardDetailDto(
       this.#dDayDiscountPrice,
       this.#starDayDiscountPrice,
       this.#weekdayDiscountPrice,
       this.#weekendDiscountPrice,
       this.#giftEventPrice,
-      this.#totalRewardPrice,
+      this.calculateTotalRewardPrice(),
     );
   }
 }

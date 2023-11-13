@@ -53,7 +53,6 @@ class MenuItems {
    * @return {MenuItemDto[]}
    */
   makeMenuItemsDto() {
-    console.log(88888888);
     return this.#menuItems.map((m) => {
       return new MenuItemDto(m.name, m.quantity);
     });
