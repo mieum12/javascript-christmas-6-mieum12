@@ -57,7 +57,6 @@ class Discounter {
       this.#discountStarDays();
       this.#discountWeekDays();
       this.#discountWeekends();
-      this.#totalDiscount();
     }
   }
 
@@ -68,7 +67,6 @@ class Discounter {
    */
   #discountDDay() {
     const dayOfMonth = this.#day.day;
-
     //크리스마스기간에 할인 적용: RewardDetail에서 할인 적용해서 가져옴
     if (dayOfMonth <= 25) {
       this.#rewardDetail.applyDDayDiscountPriceByDay(dayOfMonth);
@@ -115,10 +113,6 @@ class Discounter {
         m.category,
       );
     });
-  }
-
-  #totalDiscount() {
-    this.#rewardDetail.calculateTotalRewardPrice();
   }
 }
 export default Discounter;
