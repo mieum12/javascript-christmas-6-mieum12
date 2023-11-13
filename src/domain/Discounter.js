@@ -1,20 +1,17 @@
-import DiscountData from "./DiscountData.js";
-
 /**
  * @description 할인을 담당하는 객체
  */
 class Discounter {
   /**
-   * @type {DiscountData}
-   * @description 할인 결과를 담아서 저장할 객체(아웃풋)
-   *   자동으로 만들어준다
+   * @type {number}
    */
-  #discountData = new DiscountData();
+  static MINIMUM_TOTAL_PRICE = 10_000;
 
-  // 할인을 위해 총금액, 날짜, 모든 메뉴가 필요하다(인풋)
-  // 할인에 필요한 모든 데이터를 가져오는 것
-  // 인자로 넘길 필요가 없어서 관리
-  // 나중에 데이터가 많아지면 context라고하는 객체로 관리한다
+  /**
+   * @type {RewardDetail}
+   */
+  #rewardDetail;
+
   /**
    * @type {number}
    */
@@ -33,12 +30,19 @@ class Discounter {
    * @param {number} totalPrice
    * @param {Day} day
    * @param {MenuItem[]} menuItems
+   * @param {RewardDetail} rewardDetail
    */
-  constructor(totalPrice, day, menuItems) {
+  constructor(totalPrice, day, menuItems, rewardDetail) {
     this.#totalPrice = totalPrice;
     this.#day = day;
     this.#menuItems = menuItems;
+    this.#rewardDetail = rewardDetail;
   }
+
+  // 할인을 위해 총금액, 날짜, 모든 메뉴가 필요하다(인풋)
+  // 할인에 필요한 모든 데이터를 가져오는 것
+  // 인자로 넘길 필요가 없어서 관리
+  // 나중에 데이터가 많아지면 context라고하는 객체로 관리한다
 
   /**
    * @return {void}
@@ -47,16 +51,14 @@ class Discounter {
    * 멤버 변수가 있으니까 인자로 전달안해도됨
    */
   discountAll() {
-    this.#discountChristmas();
-    this.#discountWeekDays();
-  }
-
-  /**
-   *
-   * @return {DiscountData}
-   */
-  get discountData() {
-    return this.#discountData;
+    // totalPrice가 10_000 이하면 모든 할인이 적용되지 않는다.
+    if (this.#totalPrice >= Discounter.MINIMUM_TOTAL_PRICE) {
+      this.#discountDDay();
+      this.#discountStarDays();
+      this.#discountWeekDays();
+      this.#discountWeekends();
+      this.#totalDiscount();
+    }
   }
 
   /**
@@ -64,12 +66,12 @@ class Discounter {
    *
    * 총 금액에 대해 한번만 할인하면 됨
    */
-  #discountChristmas() {
+  #discountDDay() {
     const dayOfMonth = this.#day.day;
 
-    //크리스마스기간에 할인 적용: discountData에서 할인 적용해서 가져옴
+    //크리스마스기간에 할인 적용: RewardDetail에서 할인 적용해서 가져옴
     if (dayOfMonth <= 25) {
-      this.#discountData.applyChristmasDiscountPriceByDay(dayOfMonth);
+      this.#rewardDetail.applyDDayDiscountPriceByDay(dayOfMonth);
     }
   }
 
@@ -78,8 +80,9 @@ class Discounter {
    *
    * 날짜 필요(총 금액 - 1_000원)
    */
-  #discountStarDays(){
-
+  #discountStarDays() {
+    const dayOfMonth = this.#day.day;
+    this.#rewardDetail.applyStarDayDiscountByDay(dayOfMonth);
   }
 
   /**
@@ -90,10 +93,10 @@ class Discounter {
   #discountWeekDays() {
     const dayOfMonth = this.#day.day;
 
-    this.#menuItems.forEach(m => {
-      this.#discountData.applyWeekDaysDiscountByCategoryAndDay(
+    this.#menuItems.forEach((m) => {
+      this.#rewardDetail.applyWeekDaysDiscountByCategoryAndDay(
         dayOfMonth,
-        m.menu.category,
+        m.category,
       );
     });
   }
@@ -103,12 +106,19 @@ class Discounter {
    *
    * 모든 메뉴에 대해서 검증(카테고리가 메인인 경우, 개당 - 2_023원)
    */
-  #discountWeekends(){}
-  /**
-   * @description 5. 증정할인
-   *
-   * 총금액 120_000 이상이면 샴페인 1개 증정
-   */
-  #giftChampagneEvent(){}
+  #discountWeekends() {
+    const dayOfMonth = this.#day.day;
+
+    this.#menuItems.forEach((m) => {
+      this.#rewardDetail.applyWeekendsDiscountByCategoryAndDay(
+        dayOfMonth,
+        m.category,
+      );
+    });
+  }
+
+  #totalDiscount() {
+    this.#rewardDetail.calculateTotalRewardPrice();
+  }
 }
 export default Discounter;
