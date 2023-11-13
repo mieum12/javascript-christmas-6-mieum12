@@ -1,51 +1,73 @@
 import { Console } from "@woowacourse/mission-utils";
-import order from "../domain/Order.js";
-import menuItems from "../domain/MenuItems.js";
-
 const OutputView = {
   /**
    *
-   * @param {OrderDto} order
+   * @param {OrderDto} orderDto
    */
-  printOrderDto(order) {
-    this.printDay(order);
-    this.printAllMenus(order);
-    this.printTotalPrice(order);
-
-    Console.print(`
-<증정 메뉴>
-${order.gift}
-
-<혜택 내역>
-${order.discountDetails}
-
-<총혜택 금액>
-${order.totalDiscount}
-
-<할인 후 예상 결제 금액>
-${order.finalPayment}
-
-<12월 이벤트 배지>
-${order.eventBadge}
-
-`);
+  printOrderDto(orderDto) {
+    this.printDay(orderDto);
+    this.printAllMenus(orderDto);
+    this.printTotalPrice(orderDto);
+    this.printReward(orderDto);
+    this.printDiscountDetail(orderDto);
+    this.printTotalRewardPrice(orderDto);
+    this.printFinalPayment(orderDto);
+    this.printEventBadge(orderDto);
   },
-  printDay(order) {
+  printDay(orderDto) {
     Console.print(
-      `12월 ${order.day}일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n`,
+      `12월 ${orderDto.day}일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!\n`,
     );
   },
-
-  printAllMenus(order) {
+  printAllMenus(orderDto) {
     Console.print("<주문 메뉴>");
-    const allMenu = order.menuItems;
+    const allMenu = orderDto.menuItems;
     allMenu.forEach((m) => {
-      Console.print(m);
+      Console.print(`${m.name} ${m.quantity}개`);
     });
   },
-  printTotalPrice(order) {
+  printTotalPrice(orderDto) {
     Console.print(`\n<할인 전 총주문 금액>`);
-    Console.print(order.totalPrice);
+    Console.print(`${orderDto.priceDetail.totalPrice}원`);
+  },
+  printReward(orderDto) {
+    Console.print(`\n<증정 메뉴>`);
+    Console.print(
+      `${orderDto.rewardItem.name} ${orderDto.rewardItem.quantity}개`,
+    );
+  },
+  printDiscountDetail(orderDto) {
+    Console.print(`\n<혜택 내역>`);
+    const detail = orderDto.rewardDetail;
+
+    const detailArray = [
+      `크리스마스 디데이 할인: -${detail.dDayDiscountPrice}원`,
+      `평일 할인: -${detail.weekdayDiscountPrice}원`,
+      `주말 할인: -${detail.weekendDiscountPrice}원`,
+      `특별 할인: -${detail.starDayDiscountPrice}원`,
+      `증정 이벤트: -${detail.giftEventPrice}원`,
+    ];
+
+    detailArray.filter((d) => {
+      // -0원이 아니면 출력하기!
+      if (!d.includes("-0원")) {
+        Console.print(d);
+      }
+    });
+  },
+
+  printTotalRewardPrice(orderDto) {
+    Console.print(
+      `\n<총혜택 금액>\n${orderDto.priceDetail.totalRewardPrice}원`,
+    );
+  },
+  printFinalPayment(orderDto) {
+    Console.print(
+      `\n<할인 후 예상 결제 금액>\n${orderDto.priceDetail.finalPayment}원`,
+    );
+  },
+  printEventBadge(orderDto) {
+    Console.print(`\n<12월 이벤트 배지>\n${orderDto.eventBadge.name}`);
   },
 };
 export default OutputView;
