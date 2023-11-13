@@ -5,7 +5,6 @@ import RewardDetail from "./RewardDetail.js";
 import MenuItem from "./MenuItem.js";
 import Menu from "./Menu.js";
 import EventBadge from "./EventBadge.js";
-import rewardDetail from "./RewardDetail.js";
 
 class Order {
   /**
@@ -24,11 +23,7 @@ class Order {
    * @type {RewardDetail}
    */
   #rewardDetail;
-  /**
-   * @type {MenuItem}
-   */
   #rewardItem;
-
   #eventBadge;
 
   /**
@@ -60,7 +55,7 @@ class Order {
     const discounter = new Discounter(
       this.#priceDetail.totalPrice,
       this.#day,
-      this.#menuItems.innerItems,
+      this.#menuItems.menuItems,
       this.#rewardDetail,
     );
     // 디스타운터에 할인 적용!!
@@ -74,7 +69,9 @@ class Order {
   giveRewardItem() {
     if (this.#priceDetail.totalPrice >= 120_000) {
       //메뉴에 추가하기
-      const rewardItem = new MenuItem(Menu.샴페인, "샴페인", 1);
+      // [에러]
+      // const rewardItem = new MenuItem(Menu.샴페인, "샴페인", 1);
+      const rewardItem = { name: "샴페인", price: 25_000, quantity: "1" };
       this.#rewardItem = rewardItem;
       // 혜택 금액에 추가하기
       this.#rewardDetail.applyGiftEventByTotalPrice(rewardItem.price);
@@ -99,7 +96,7 @@ class Order {
    *
    * 메뉴dto(MenuItemsDto),혜택dto(RewardDetailDto),금액dto(PriceDetailDto)로 나눔
    *
-   * 혜택 dto에는
+   * 혜택 dto에는 모든 혜택에 대한 정보가 들어있음
    * 금액 dto에는 총 금액, 혜택금액, 최종 금액이 포함됨
    */
   makeOrderDto() {
@@ -107,8 +104,8 @@ class Order {
       this.#day.day,
       this.#menuItems.makeMenuItemsDto(),
       this.#rewardDetail.makeRewardDetailDto(),
-      this.#rewardItem.makeMenuItemDto(),
-      this.#priceDetail.makePriceDetailDto(rewardDetail),
+      this.#rewardItem,
+      this.#priceDetail.makePriceDetailDto(),
       this.giveEventBadge(),
     );
   }
