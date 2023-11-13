@@ -1,7 +1,7 @@
 import MenuItem from "./MenuItem.js";
 import InputMenusError from "../exception/InputMenusError.js";
 import MenuCategory from "./MenuCategory.js";
-
+import MenuItemDto from "./dto/MenuItemDto.js";
 class MenuItems {
   /**
    *
@@ -23,7 +23,7 @@ class MenuItems {
     const menuItemsString = input.split(",");
     // 메뉴-1 하나가 메뉴아이템
     // [MenuItem, MenuItem,MenuItem...]
-    const menuItems = menuItemsString.map((s) => new MenuItem(s));
+    const menuItems = menuItemsString.map((s) => MenuItem.fromInput(s)); //정적팩토리메서드
 
     this.#menuItems = menuItems;
 
@@ -34,9 +34,29 @@ class MenuItems {
 
   // =======================================================================================
 
-  // TODO 잘 모르겠넹..
+  /**
+   * @return {number}
+   */
+  get totalPrice() {
+    return this.#menuItems
+      .map((m) => m.price)
+      .reduce((sum, price) => sum + price, 0);
+  }
+  /**
+   *
+   * @return {MenuItem[]}
+   */
   get menuItems() {
     return this.#menuItems;
+  }
+  /**
+   * @return {MenuItemDto[]}
+   */
+  makeMenuItemsDto() {
+    console.log(88888888);
+    return this.#menuItems.map((m) => {
+      return new MenuItemDto(m.name, m.quantity);
+    });
   }
   /**
    *
@@ -78,40 +98,9 @@ class MenuItems {
     const totalQuantity = menuItems.reduce((totalQuantity, m) => {
       return totalQuantity + m.quantity;
     }, 0);
-
     if (totalQuantity > MenuItems.MAX_TOTAL_QUANTITY) {
       throw new InputMenusError();
     }
-  }
-
-  // =======================================================================================
-
-  /**
-   * @param {MenuItem[]} menuItems
-   * @return {number}
-   * @description 메뉴들의 총 금액을 계산하는 로직
-   */
-  calculateTotalPrice() {
-    // ["35_000", "60_000"]
-    const price = this.#menuItems.map((m) => m.menu.price);
-    // [ 35000, 60000 ]
-    const numberArray = price.map((p) => parseInt(p.replace("_", "")));
-    // 배열의 모든 수 더하기
-    const sum = numberArray.reduce((acc, num) => acc + num, 0);
-    return sum;
-  }
-
-  /**
-   * @return {string[]}
-   */
-  makeMenuString() {
-    const totalMenu = this.#menuItems.map((m) => {
-      return `${m.name} ${m.quantity}개`;
-    });
-
-    console.log(totalMenu);
-    return totalMenu;
-    //✅[ "해산물파스타-2", "레드와인-1", "초코케이크-1" ]음
   }
 }
 export default MenuItems;
