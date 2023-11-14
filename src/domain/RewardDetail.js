@@ -1,5 +1,7 @@
 import RewardDetailDto from "./dto/RewardDetailDto.js";
 import MenuCategory from "./MenuCategory.js";
+import menuItem from "./MenuItem.js";
+import Menu from "./Menu.js";
 /**
  * @description 할인과 관련된 데이터(5가지 할인)를 갖고있는 클래스
  */
@@ -55,6 +57,26 @@ class RewardDetail {
     this.#totalRewardPrice = totalRewardPrice;
   }
 
+  get dDayDiscountPrice() {
+    return this.#dDayDiscountPrice;
+  }
+
+  get starDayDiscountPrice() {
+    return this.#starDayDiscountPrice;
+  }
+
+  get weekdayDiscountPrice() {
+    return this.#weekdayDiscountPrice;
+  }
+
+  get weekendDiscountPrice() {
+    return this.#weekendDiscountPrice;
+  }
+
+  get giftEventPrice() {
+    return this.#giftEventPrice;
+  }
+
   /**
    * @param {number} dayOfMonth
    * @return {void}
@@ -81,17 +103,17 @@ class RewardDetail {
 
   /**
    * @param {number} dayOfMonth
-   * @param {string} category
+   * @param {MenuItem} menuItem
    * @return {void}
    * @description 3. 평일 할인은 (일-목요일+ 디저트메뉴)인 경우 메뉴당 2023원 할인
    */
-  applyWeekDaysDiscountByCategoryAndDay(dayOfMonth, category) {
+  applyWeekDaysDiscountByCategoryAndDay(dayOfMonth, menuItem) {
     // early return - if문 안에 중첩되지 안게 deepth를 줄임
-    if (!this.#isWeekday(dayOfMonth)) {
-      return;
-    }
-    if (category === MenuCategory.BEVERAGE) {
-      this.#weekdayDiscountPrice += 2_023;
+    if (
+      !this.#isWeekday(dayOfMonth) &&
+      menuItem.category === MenuCategory.DESSERT
+    ) {
+      this.#weekdayDiscountPrice += menuItem.quantity * 2_023;
     }
   }
 
@@ -103,10 +125,10 @@ class RewardDetail {
    * @description 4. 주말 할인은 (금토+메인메뉴)일 경우 메뉴 당 2_023원 할인
    */
   applyWeekendsDiscountByCategoryAndDay(dayOfMonth, menuItem) {
-    if (this.#isWeekday(dayOfMonth)) {
-      return;
-    }
-    if (menuItem.category === MenuCategory.MAIN) {
+    if (
+      this.#isWeekday(dayOfMonth) &&
+      menuItem.category === MenuCategory.MAIN
+    ) {
       this.#weekendDiscountPrice += menuItem.quantity * 2_023;
     }
   }

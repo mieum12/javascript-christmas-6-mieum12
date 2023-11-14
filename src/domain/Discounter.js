@@ -92,10 +92,7 @@ class Discounter {
     const dayOfMonth = this.#day.day;
 
     this.#menuItems.forEach((m) => {
-      this.#rewardDetail.applyWeekDaysDiscountByCategoryAndDay(
-        dayOfMonth,
-        m.category,
-      );
+      this.#rewardDetail.applyWeekDaysDiscountByCategoryAndDay(dayOfMonth, m);
     });
   }
 
@@ -108,10 +105,7 @@ class Discounter {
     const dayOfMonth = this.#day.day;
 
     this.#menuItems.forEach((m) => {
-      this.#rewardDetail.applyWeekendsDiscountByCategoryAndDay(
-        dayOfMonth,
-        m.category,
-      );
+      this.#rewardDetail.applyWeekendsDiscountByCategoryAndDay(dayOfMonth, m);
     });
   }
 }
