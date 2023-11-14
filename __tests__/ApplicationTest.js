@@ -78,7 +78,7 @@ describe("기능 테스트", () => {
     await app.run();
 
     // then
-    const expected = ["<증정 내역>" + LINE_SEPARATOR + "없음"];
+    const expected = ["<증정 메뉴>" + LINE_SEPARATOR + "없음"];
 
     expectLogContains(getOutput(logSpy), expected);
   });
@@ -92,6 +92,8 @@ describe("기능 테스트", () => {
     await app.run();
     // then
     const expected = ["<12월 이벤트 배지>" + LINE_SEPARATOR + "산타"];
+
+    expectLogContains(getOutput(logSpy), expected);
   });
 });
 
