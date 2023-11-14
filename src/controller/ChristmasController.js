@@ -1,7 +1,7 @@
 import OutputView from "../view/OutputView.js";
 import InputView from "../view/InputView.js";
 
-export class Controller {
+export class ChristmasController {
   async start() {
     // 1. 주문 생성(날짜 및 메뉴 입력): Order 생성
     const order = await InputView.readOrder();
