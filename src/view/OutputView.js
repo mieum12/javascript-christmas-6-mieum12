@@ -33,9 +33,13 @@ const OutputView = {
   },
   printRewardItem(orderDto) {
     Console.print(`\n<증정 메뉴>`);
-    Console.print(
-      `${orderDto.rewardItem.name} ${orderDto.rewardItem.quantity}개`,
-    );
+    if (orderDto.rewardItem.name === "없음") {
+      Console.print("없음");
+    } else {
+      Console.print(
+        `${orderDto.rewardItem.name} ${orderDto.rewardItem.quantity}개`,
+      );
+    }
   },
   printRewardDetail(orderDto) {
     Console.print(`\n<혜택 내역>`);
