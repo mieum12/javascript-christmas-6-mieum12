@@ -1,4 +1,4 @@
-import { Controller } from "./controller/Controller.js";
+import { ChristmasController } from "./controller/ChristmasController.js";
 
 class App {
   /**
@@ -6,7 +6,7 @@ class App {
    * @return {Promise<void>}
    */
   async run() {
-    await new Controller().start();
+    await new ChristmasController().start();
   }
 }
 

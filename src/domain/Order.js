@@ -31,9 +31,12 @@ class Order {
    * @param {MenuItems} menuItems
    */
   constructor(day, menuItems) {
+    // 날짜와 메뉴는 가져온 것을 넣기
     new Date(2023, 12, day);
     this.#day = day;
     this.#menuItems = menuItems;
+
+    // 아래는 여기서 비즈니스 로직을 통해 구하기
     this.#priceDetail = new PriceDetail(menuItems.totalPrice);
     this.#rewardDetail = new RewardDetail();
     // 아래에서 else대신 디폴트값 설정, null도 되지만 '없음'의 상태를 만들어 enum으로도 표현 가능

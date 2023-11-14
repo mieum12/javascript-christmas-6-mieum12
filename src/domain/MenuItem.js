@@ -96,12 +96,12 @@ class MenuItem {
     return { menu, menuName, quantity };
   }
 
-  /**
-   * @return {MenuItemDto}
-   */
-  makeMenuItemDto() {
-    return new MenuItemDto(this.#name, this.#quantity);
-  }
+  // /**
+  //  * @return {MenuItemDto}
+  //  */
+  // makeMenuItemDto() {
+  //   return new MenuItemDto(this.#name, this.#quantity);
+  // }
 
   /**
    * @param{number}quantity
