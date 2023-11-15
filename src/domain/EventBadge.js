@@ -1,3 +1,6 @@
+/**
+ * @description 이벤트 배지와 관련된 데이터를 갖고있는 클래스
+ */
 class EventBadge {
   /**
    * @type {string}
@@ -41,6 +44,7 @@ class EventBadge {
   /**
    * @param {number} rewardPrice
    * @return {EventBadge}
+   * @description 배지 부여하는 로직
    */
   static from(rewardPrice) {
     return [

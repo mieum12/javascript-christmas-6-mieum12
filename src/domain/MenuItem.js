@@ -1,4 +1,3 @@
-// 구매할 메뉴 종류 이름 수량
 import Menu from "./Menu.js";
 import InputMenusError from "../exception/InputMenusError.js";
 import MenuItemDto from "./dto/MenuItemDto.js";
@@ -38,8 +37,7 @@ class MenuItem {
    */
   constructor(menu, menuName, quantity) {
     this.#menu = menu;
-    // 이렇게 필요 없고 menu.name으로 getter를 통해 내보낼 수 있다.
-    // this.#name = menuName;
+    this.#name = menuName;
     this.#quantity = quantity;
   }
 
@@ -96,16 +94,16 @@ class MenuItem {
     return { menu, menuName, quantity };
   }
 
-  // /**
-  //  * @return {MenuItemDto}
-  //  */
-  // makeMenuItemDto() {
-  //   return new MenuItemDto(this.#name, this.#quantity);
-  // }
+  /**
+   * @return {MenuItemDto}
+   */
+  makeMenuItemDto() {
+    return new MenuItemDto(this.#menu, this.#name, this.#quantity);
+  }
 
   /**
    * @param{number}quantity
-   * @description 메뉴의 수량이 최소 1개 이상인지
+   * @description 메뉴의 수량이 최소 1개 이상인지는 검증
    * @return {void}
    */
   static #validateQuantity(quantity) {

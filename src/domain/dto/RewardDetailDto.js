@@ -81,6 +81,10 @@ class RewardDetailDto {
     return this.#giftEventPrice;
   }
 
+  /**
+   *
+   * @return {number}
+   */
   get totalRewardPrice() {
     return this.#totalRewardPrice;
   }

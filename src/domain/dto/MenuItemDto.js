@@ -1,4 +1,30 @@
+import Menu from "../Menu.js";
+
 class MenuItemDto {
+  #menu;
+  /**
+   * @types {string}
+   */
+  #name;
+  /**
+   * @types {number}
+   */
+  #quantity;
+
+  /**
+   * @param menu
+   * @param {string} name
+   * @param {number} quantity
+   */
+  constructor(menu, name, quantity) {
+    this.#menu = Menu[name];
+    this.#name = name;
+    this.#quantity = quantity;
+  }
+
+  get menu() {
+    return this.#menu;
+  }
   /**
    *
    * @return {string}
@@ -13,23 +39,6 @@ class MenuItemDto {
    */
   get quantity() {
     return this.#quantity;
-  }
-  /**
-   * @types {string}
-   */
-  #name;
-  /**
-   * @types {number}
-   */
-  #quantity;
-
-  /**
-   * @param {string} name
-   * @param {number} quantity
-   */
-  constructor(name, quantity) {
-    this.#name = name;
-    this.#quantity = quantity;
   }
 }
 

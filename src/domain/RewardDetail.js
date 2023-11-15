@@ -1,7 +1,5 @@
 import RewardDetailDto from "./dto/RewardDetailDto.js";
 import MenuCategory from "./MenuCategory.js";
-import menuItem from "./MenuItem.js";
-import Menu from "./Menu.js";
 /**
  * @description 할인과 관련된 데이터(5가지 할인)를 갖고있는 클래스
  */

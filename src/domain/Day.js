@@ -48,6 +48,5 @@ export class Day {
     if (day < Day.MIN_DAY || day > Day.MAX_DAY) {
       throw new InputDateError();
     }
-    //
   }
 }

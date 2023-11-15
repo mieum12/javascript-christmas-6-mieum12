@@ -1,5 +1,5 @@
 /**
- * @description 할인을 담당하는 객체
+ * @description 할인을 담당하는 클래스
  */
 class Discounter {
   /**

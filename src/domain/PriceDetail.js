@@ -1,5 +1,8 @@
 import PriceDetailDto from "./dto/PriceDetailDto.js";
 
+/**
+ * @description 금액과 관련된 데이터(총금액, 혜택금액, 결제금액)를 갖고있는 클래스
+ */
 class PriceDetail {
   /**
    * @type {number}
