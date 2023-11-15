@@ -2,6 +2,10 @@ import MenuItem from "./MenuItem.js";
 import InputMenusError from "../exception/InputMenusError.js";
 import MenuCategory from "./MenuCategory.js";
 import MenuItemDto from "./dto/MenuItemDto.js";
+
+/**
+ * @description MenuItem의 일급 컬렉션
+ */
 class MenuItems {
   /**
    *
@@ -32,8 +36,6 @@ class MenuItems {
     this.#validateQuantity(menuItems);
   }
 
-  // =======================================================================================
-
   /**
    * @return {number}
    */
@@ -49,14 +51,7 @@ class MenuItems {
   get menuItems() {
     return this.#menuItems;
   }
-  /**
-   * @return {MenuItemDto[]}
-   */
-  makeMenuItemsDto() {
-    return this.#menuItems.map((m) => {
-      return new MenuItemDto(m.name, m.quantity);
-    });
-  }
+
   /**
    *
    * @param {MenuItem[]} menuItems
@@ -100,6 +95,15 @@ class MenuItems {
     if (totalQuantity > MenuItems.MAX_TOTAL_QUANTITY) {
       throw new InputMenusError();
     }
+  }
+
+  /**
+   * @return {MenuItemDto[]}
+   */
+  makeMenuItemsDto() {
+    return this.#menuItems.map((m) => {
+      return new MenuItemDto(m.menu, m.name, m.quantity);
+    });
   }
 }
 export default MenuItems;

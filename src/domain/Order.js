@@ -5,7 +5,11 @@ import RewardDetail from "./RewardDetail.js";
 import MenuItem from "./MenuItem.js";
 import Menu from "./Menu.js";
 import EventBadge from "./EventBadge.js";
+import MenuItems from "./MenuItems.js";
 
+/**
+ * @description 혜택에 필요한 모든 데이터를 하나하나 모으고 그것 중 출력에 필요한 데이터를 dto로 만들어 넘기는 클래스
+ */
 class Order {
   /**
    * @type {Day}
@@ -23,6 +27,9 @@ class Order {
    * @type {RewardDetail}
    */
   #rewardDetail;
+  /**
+   * @type {MenuItem}
+   */
   #rewardItem;
   #eventBadge;
 
@@ -32,11 +39,11 @@ class Order {
    */
   constructor(day, menuItems) {
     // 날짜와 메뉴는 가져온 것을 넣기
-    new Date(2023, 12, day);
+    // new Date(2023, 12, day);
     this.#day = day;
     this.#menuItems = menuItems;
 
-    // 아래는 여기서 비즈니스 로직을 통해 구하기
+    // 나머지 데이터는 비즈니스 로직을 통해 구하기
     this.#priceDetail = new PriceDetail(menuItems.totalPrice);
     this.#rewardDetail = new RewardDetail();
     // 아래에서 else대신 디폴트값 설정, null도 되지만 '없음'의 상태를 만들어 enum으로도 표현 가능
@@ -50,8 +57,6 @@ class Order {
    * @description 1. 할인
    *
    * 직접 하기보다는 Discounter 위임하기
-   *
-   * 할인과 관련된 데이터들은 discountAll에 있다
    */
   discount() {
     //할인 할 디스타운터에 정보를 주어 생성!
@@ -73,8 +78,7 @@ class Order {
     if (this.#priceDetail.totalPrice >= 120_000) {
       //메뉴에 추가하기
       // [에러]
-      // const rewardItem = new MenuItem(Menu.샴페인, "샴페인", 1);
-      const rewardItem = { name: "샴페인", price: 25_000, quantity: "1" };
+      const rewardItem = new MenuItem(Menu.샴페인, "샴페인", 1);
       this.#rewardItem = rewardItem;
       // 혜택 금액에 추가하기
       this.#rewardDetail.applyGiftEventByTotalPrice(rewardItem.price);
@@ -107,7 +111,7 @@ class Order {
       this.#day.day,
       this.#menuItems.makeMenuItemsDto(),
       this.#rewardDetail.makeRewardDetailDto(),
-      this.#rewardItem,
+      this.#rewardItem.makeMenuItemDto(),
       this.#priceDetail.makePriceDetailDto(),
       this.giveEventBadge(),
     );

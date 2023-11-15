@@ -1,9 +1,10 @@
 import MenuItem from "../src/domain/MenuItem.js";
 import MenuItemDto from "../src/domain/dto/MenuItemDto.js";
+import Menu from "../src/domain/Menu.js";
 
 describe("클래스 테스트", () => {
   test("MenuItem 성공적으로 생성할 수 있다.", async () => {
-    const menuItemDto = new MenuItemDto("타파스", 5);
+    const menuItemDto = new MenuItemDto(Menu.타파스, "타파스", 5);
 
     expect(menuItemDto.name).toBe("타파스");
     expect(menuItemDto.quantity).toBe(5);
