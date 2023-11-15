@@ -1,6 +1,7 @@
-# ✦ 기능 요구사항(절차) ✦
+# <span style="color:#4162E6">✦ 기능 요구사항 정리 ✦</span>
 
-## ✍🏻 입력 받을 것
+
+## <span style="background-color:#E6E6FA">입력 받을 것</span>
 
 ### 1. 날짜
 
@@ -15,7 +16,6 @@
 
 `[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.`
 
----
 
 ### 2. 메뉴와 수량
 
@@ -34,8 +34,9 @@
 
 `[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.`
 
-## 👛 할인
-만원 이상이어야 할인 적용 가능
+## <span style="background-color:#E6E6FA">할인 및 증정</span>
+
+- [x] 만원 이상이어야 할인 적용 가능
 
 ### 1. 디데이 할인
 
@@ -67,7 +68,9 @@
 
 할인 전 총주문 금액이 120_000 원 이상일 때, 샴페인 1개 증정
 
-## 🎁 배지 부여
+혜택 금액에 포함 주의
+
+## <span style="background-color:#E6E6FA">배지 부여</span>
 
 총혜택 금액에 따라 다른 이벤트 배지를 부여
 
@@ -79,15 +82,17 @@
 
 2만 원 이상: 산타
 
-# ✦ 기능 설계✦
+# <span style="color:#4162E6"> ✦ 기능 설계 ✦ </span>
 
-## 🪄 <u>domain</u>
+## <span style="background-color:#E6E6FA">domain</span>
 
 ### 1. Day
 
 입력받은 방문할 날짜(일)를 정하기 위한 클래스
 
 ### 2. Menu
+
+= 메뉴판
 
 전체 메뉴에 대한 enum
 
@@ -97,7 +102,7 @@
 
 ### 4. MenuItem
 
-사용자의 `메뉴-수량` 입력값을 받아 MenuItem 객체를 만든다
+사용자의 `메뉴-수량` 입력값을 받아 저장하는 클래스
 
 ### 5. MenuItems
 
@@ -105,32 +110,50 @@ MenuItem의 일급 컬렉션
 
 ### 6. Order
 
-### 7.Discounter
+혜택에 필요한 모든 데이터를 하나하나 모으고 
 
-할인을 담당하는 객체
+그것 중 출력에 필요한 데이터를 dto로 만들어 넘기는 클래스
+
+'할인(`discount`) - 증정(`giveRewardItem`) - 배지부여(`giveEventBadge`)' 를 순서대로 실행한다.
+
+### 7. Discounter
+
+할인을 담당하는 클래스
+
+5가지 할인을 적용하는 메소드 실행
 
 ### 8. RewardDetail
 
-할인 종류마다 적용된 할인 금액 계산한 최종 할인 결과 데이터
+할인과 관련된 데이터(5가지 할인)를 갖고있는 클래스
 
+### 9. PriceDetail
 
+금액과 관련된 데이터(총금액, 혜택금액, 결제금액)를 갖고있는 클래스
 
+### 10. EventBadge
 
-## 🪄 <u>view</u>
+이벤트 배지와 관련된 데이터를 갖고있는 클래스
+
+배지 부여하는 로직
+
+## <span style="background-color:#E6E6FA">view</span>
 
 ### 1. InputView
 
-사용자 입력을 받는 객체
-날짜, 메뉴-수량
+사용자 입력을 받는 클래스
+
+날짜, 메뉴-수량을 각각 객체로 생성하고 또 그것을 Order 객체로 반환
 
 ### 2. InputValidator
 
-입력값의 유효성을 검증하는 객체
+입력값의 유효성을 검증하는 클래스
 
 ### 3. OutputView
 
-데이터를 받아 랜더링 후 출력하는 객체
+데이터를 받아 랜더링 후 출력하는 클래스
 
-## 🪄 <u>controller</u>
+## <span style="background-color:#E6E6FA">controller</span>
 
-전체 프로그램의 흐름 제어
+### ChristmasController
+
+전체 프로그램의 흐름을 제어하는 클래스
