@@ -5,12 +5,16 @@ import RewardDetail from "./RewardDetail.js";
 import MenuItem from "./MenuItem.js";
 import Menu from "./Menu.js";
 import EventBadge from "./EventBadge.js";
-import MenuItems from "./MenuItems.js";
 
 /**
  * @description 혜택에 필요한 모든 데이터를 하나하나 모으고 그것 중 출력에 필요한 데이터를 dto로 만들어 넘기는 클래스
  */
 class Order {
+  /**
+   *
+   * @type {number}
+   */
+  static MIN_DISCOUNTABLE_PRICE = 120_000;
   /**
    * @type {Day}
    */
@@ -75,7 +79,7 @@ class Order {
    * @description 2. 증정 메뉴 생성 - 메뉴에 샴페인 추가, 혜택 금액에도 추가
    */
   giveRewardItem() {
-    if (this.#priceDetail.totalPrice >= 120_000) {
+    if (this.#priceDetail.totalPrice >= Order.MIN_DISCOUNTABLE_PRICE) {
       //메뉴에 추가하기
       // [에러]
       const rewardItem = new MenuItem(Menu.샴페인, "샴페인", 1);

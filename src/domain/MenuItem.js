@@ -6,8 +6,14 @@ import MenuItemDto from "./dto/MenuItemDto.js";
  * @description - 사용자의 `메뉴-수량` 입력값을 받아 저장하는 클래스
  */
 class MenuItem {
+  /**
+   *
+   * @type {number}
+   */
   static MIN_QUANTITY = 1;
-
+  /**
+   * @type
+   */
   #menu;
   /**
    * @type {string}

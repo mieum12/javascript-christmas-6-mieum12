@@ -7,6 +7,26 @@ class RewardDetail {
   /**
    * @type {number}
    */
+  static WEEK_DISCOUNT_PRICE = 2_023;
+  /**
+   *
+   * @type {number}
+   */
+  static D_DAY_DEFAULT_PRICE = 1_000;
+  /**
+   *
+   * @type {number}
+   */
+  static D_DAY_DAILY_INCREASE_PRICE = 100;
+  /**
+   *
+   * @type {number}
+   */
+  static STAR_DAY_DISCOUNT_PRICE = 1_000;
+
+  /**
+   * @type {number}
+   */
   #dDayDiscountPrice;
   /**
    * @type {number}
@@ -81,7 +101,9 @@ class RewardDetail {
    * @description 1. 크리스마스 디데이 할인 금액을 날짜에 따라 적용한다
    */
   applyDDayDiscountPriceByDay(dayOfMonth) {
-    const discountAmount = 1_000 + 100 * (dayOfMonth - 1);
+    const discountAmount =
+      RewardDetail.D_DAY_DEFAULT_PRICE +
+      RewardDetail.D_DAY_DAILY_INCREASE_PRICE * (dayOfMonth - 1);
     this.#dDayDiscountPrice += discountAmount;
   }
 
@@ -95,7 +117,7 @@ class RewardDetail {
     // 12월 인덱스는 11인것 주의
     const date = new Date(2023, 11, dayOfMonth);
     if (date.getDay() === 0 || dayOfMonth === 25) {
-      this.#starDayDiscountPrice += 1_000;
+      this.#starDayDiscountPrice += RewardDetail.STAR_DAY_DISCOUNT_PRICE;
     }
   }
 
@@ -111,7 +133,8 @@ class RewardDetail {
       !this.#isWeekday(dayOfMonth) &&
       menuItem.category === MenuCategory.DESSERT
     ) {
-      this.#weekdayDiscountPrice += menuItem.quantity * 2_023;
+      this.#weekdayDiscountPrice +=
+        menuItem.quantity * RewardDetail.WEEK_DISCOUNT_PRICE;
     }
   }
 
@@ -127,7 +150,8 @@ class RewardDetail {
       this.#isWeekday(dayOfMonth) &&
       menuItem.category === MenuCategory.MAIN
     ) {
-      this.#weekendDiscountPrice += menuItem.quantity * 2_023;
+      this.#weekendDiscountPrice +=
+        menuItem.quantity * RewardDetail.WEEK_DISCOUNT_PRICE;
     }
   }
 
