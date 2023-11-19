@@ -1,5 +1,13 @@
+import { ChristmasController } from "./controller/ChristmasController.js";
+
 class App {
-  async run() {}
+  /**
+   *
+   * @return {Promise<void>}
+   */
+  async run() {
+    await new ChristmasController().start();
+  }
 }
 
 export default App;
