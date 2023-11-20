@@ -69,12 +69,13 @@ const OutputView = {
    */
   printRewardDetail(orderDto) {
     Console.print(`\n<혜택 내역>`);
+    const discount = orderDto.rewardDetail.discountPrice;
     const detailArray = [
-      `크리스마스 디데이 할인: -${orderDto.rewardDetail.dDayDiscountPrice.toLocaleString()}원`,
-      `평일 할인: -${orderDto.rewardDetail.weekdayDiscountPrice.toLocaleString()}원`,
-      `주말 할인: -${orderDto.rewardDetail.weekendDiscountPrice.toLocaleString()}원`,
-      `특별 할인: -${orderDto.rewardDetail.starDayDiscountPrice.toLocaleString()}원`,
-      `증정 이벤트: -${orderDto.rewardDetail.giftEventPrice.toLocaleString()}원`,
+      `크리스마스 디데이 할인: -${discount.dDay.toLocaleString()}원`,
+      `평일 할인: -${discount.weekday.toLocaleString()}원`,
+      `주말 할인: -${discount.weekend.toLocaleString()}원`,
+      `특별 할인: -${discount.starDay.toLocaleString()}원`,
+      `증정 이벤트: -${discount.giftEvent.toLocaleString()}원`,
     ];
     const resultArray = detailArray.filter((d) => !d.includes("-0원"));
     if (resultArray.length > 0) {
@@ -92,10 +93,8 @@ const OutputView = {
     Console.print("\n<총혜택 금액>");
 
     Console.print(
-      `-${orderDto.rewardDetail.totalRewardPrice.toLocaleString()}원`,
+      `-${orderDto.rewardDetail.discountPrice.totalRewardPrice.toLocaleString()}원`,
     );
-    // [에러]
-    // Console.print(`${orderDto.priceDetail.totalRewardPrice}원`);
   },
   /**
    *
@@ -106,7 +105,8 @@ const OutputView = {
     Console.print("\n<할인 후 예상 결제 금액>");
     Console.print(
       `${(
-        orderDto.totalPrice - orderDto.rewardDetail.totalRewardPrice
+        orderDto.totalPrice -
+        orderDto.rewardDetail.discountPrice.totalRewardPrice
       ).toLocaleString()}원`,
     );
   },

@@ -25,74 +25,19 @@ class RewardDetail {
   static STAR_DAY_DISCOUNT_PRICE = 1_000;
 
   /**
-   * @type {number}
+   * @type {Object}
    */
-  #dDayDiscountPrice;
-  /**
-   * @type {number}
-   */
-  #starDayDiscountPrice;
-  /**
-   * @type {number}
-   */
-  #weekdayDiscountPrice;
-  /**
-   * @type {number}
-   */
-  #weekendDiscountPrice;
-  /**
-   * @type {number}
-   */
-  #giftEventPrice;
+  #discountPrice;
 
-  /**
-   * @type {number}
-   */
-  #totalRewardPrice;
-
-  /**
-   *
-   * @param {number} dDayDiscountPrice
-   * @param {number} starDayDiscountPrice
-   * @param {number} weekdayDiscountPrice
-   * @param {number} weekendDiscountPrice
-   * @param {number} giftEventPrice
-   * @param {number} totalRewardPrice
-   */
-  constructor(
-    dDayDiscountPrice = 0,
-    starDayDiscountPrice = 0,
-    weekdayDiscountPrice = 0,
-    weekendDiscountPrice = 0,
-    giftEventPrice = 0,
-    totalRewardPrice = 0,
-  ) {
-    this.#dDayDiscountPrice = dDayDiscountPrice;
-    this.#starDayDiscountPrice = starDayDiscountPrice;
-    this.#weekdayDiscountPrice = weekdayDiscountPrice;
-    this.#weekendDiscountPrice = weekendDiscountPrice;
-    this.#giftEventPrice = giftEventPrice;
-    this.#totalRewardPrice = totalRewardPrice;
-  }
-
-  get dDayDiscountPrice() {
-    return this.#dDayDiscountPrice;
-  }
-
-  get starDayDiscountPrice() {
-    return this.#starDayDiscountPrice;
-  }
-
-  get weekdayDiscountPrice() {
-    return this.#weekdayDiscountPrice;
-  }
-
-  get weekendDiscountPrice() {
-    return this.#weekendDiscountPrice;
-  }
-
-  get giftEventPrice() {
-    return this.#giftEventPrice;
+  constructor() {
+    this.#discountPrice = {
+      dDay: 0,
+      starDay: 0,
+      weekday: 0,
+      weekend: 0,
+      giftEvent: 0,
+      totalRewardPrice: 0,
+    };
   }
 
   /**
@@ -104,7 +49,7 @@ class RewardDetail {
     const discountAmount =
       RewardDetail.D_DAY_DEFAULT_PRICE +
       RewardDetail.D_DAY_DAILY_INCREASE_PRICE * (dayOfMonth - 1);
-    this.#dDayDiscountPrice += discountAmount;
+    this.#discountPrice.dDay += discountAmount;
   }
 
   /**
@@ -117,7 +62,7 @@ class RewardDetail {
     // 12월 인덱스는 11인것 주의
     const date = new Date(2023, 11, dayOfMonth);
     if (date.getDay() === 0 || dayOfMonth === 25) {
-      this.#starDayDiscountPrice += RewardDetail.STAR_DAY_DISCOUNT_PRICE;
+      this.#discountPrice.starDay += RewardDetail.STAR_DAY_DISCOUNT_PRICE;
     }
   }
 
@@ -133,7 +78,7 @@ class RewardDetail {
       !this.#isWeekday(dayOfMonth) &&
       menuItem.category === MenuCategory.DESSERT
     ) {
-      this.#weekdayDiscountPrice +=
+      this.#discountPrice.weekday +=
         menuItem.quantity * RewardDetail.WEEK_DISCOUNT_PRICE;
     }
   }
@@ -150,7 +95,7 @@ class RewardDetail {
       this.#isWeekday(dayOfMonth) &&
       menuItem.category === MenuCategory.MAIN
     ) {
-      this.#weekendDiscountPrice +=
+      this.#discountPrice.weekend +=
         menuItem.quantity * RewardDetail.WEEK_DISCOUNT_PRICE;
     }
   }
@@ -160,7 +105,7 @@ class RewardDetail {
    * @description 5. 총금액 120_000 이상이면 샴페인(2만5천) 증정이벤트
    */
   applyGiftEventByTotalPrice(rewardPrice) {
-    this.#giftEventPrice += rewardPrice;
+    this.#discountPrice.giftEvent += rewardPrice;
   }
 
   /**
@@ -178,24 +123,16 @@ class RewardDetail {
   }
 
   /**
-   * @return {number}
-   * @description 총 혜택 금액을 계산하는 함수
-   */
-  calculateTotalRewardPrice() {
-    return (this.#totalRewardPrice =
-      this.#weekdayDiscountPrice +
-      this.#weekendDiscountPrice +
-      this.#starDayDiscountPrice +
-      this.#dDayDiscountPrice +
-      this.#giftEventPrice);
-  }
-
-  /**
    *
    * @return {number}
    */
   get totalRewardPrice() {
-    return this.#totalRewardPrice;
+    return (this.#discountPrice.totalRewardPrice =
+      this.#discountPrice.dDay +
+      this.#discountPrice.starDay +
+      this.#discountPrice.weekday +
+      this.#discountPrice.weekend +
+      this.#discountPrice.giftEvent);
   }
 
   /**
@@ -203,14 +140,7 @@ class RewardDetail {
    * @description OrderDto에 전달할 (메뉴dto,혜택dto,금액dto) 중 하나인 혜택 DTO다
    */
   makeRewardDetailDto() {
-    return new RewardDetailDto(
-      this.#dDayDiscountPrice,
-      this.#starDayDiscountPrice,
-      this.#weekdayDiscountPrice,
-      this.#weekendDiscountPrice,
-      this.#giftEventPrice,
-      this.calculateTotalRewardPrice(),
-    );
+    return new RewardDetailDto(this.#discountPrice);
   }
 }
 
