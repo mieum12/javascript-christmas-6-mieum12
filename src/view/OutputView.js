@@ -45,7 +45,7 @@ const OutputView = {
    */
   printTotalPrice(orderDto) {
     Console.print(`\n<할인 전 총주문 금액>`);
-    Console.print(`${orderDto.priceDetail.totalPrice.toLocaleString()}원`);
+    Console.print(`${orderDto.totalPrice.toLocaleString()}원`);
   },
   /**
    *
@@ -106,7 +106,7 @@ const OutputView = {
     Console.print("\n<할인 후 예상 결제 금액>");
     Console.print(
       `${(
-        orderDto.priceDetail.totalPrice - orderDto.rewardDetail.totalRewardPrice
+        orderDto.totalPrice - orderDto.rewardDetail.totalRewardPrice
       ).toLocaleString()}원`,
     );
   },

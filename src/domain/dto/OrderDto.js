@@ -1,6 +1,3 @@
-import menuItems from "../MenuItems.js";
-import priceDetail from "../PriceDetail.js";
-
 class OrderDto {
   /**
    * @type {number}
@@ -22,9 +19,9 @@ class OrderDto {
   #rewardItem;
 
   /**
-   * @type {PriceDetailDto}
+   * @type {number}
    */
-  #priceDetail;
+  #totalPrice;
 
   /**
    * @type {EventBadge}
@@ -37,7 +34,7 @@ class OrderDto {
    * @param {MenuItemDto[]} menuItems
    * @param {RewardDetailDto} rewardDetail
    * @param {MenuItemDto} rewardItem
-   * @param {PriceDetailDto} priceDetail
+   * @param {number} totalPrice
    * @param {EventBadge} eventBadge
    */
   constructor(
@@ -45,14 +42,14 @@ class OrderDto {
     menuItems,
     rewardDetail,
     rewardItem,
-    priceDetail,
+    totalPrice,
     eventBadge,
   ) {
     this.#day = day;
     this.#menuItems = menuItems;
     this.#rewardDetail = rewardDetail;
     this.#rewardItem = rewardItem;
-    this.#priceDetail = priceDetail;
+    this.#totalPrice = totalPrice;
     this.#eventBadge = eventBadge;
   }
 
@@ -90,10 +87,10 @@ class OrderDto {
 
   /**
    *
-   * @return {PriceDetailDto}
+   * @return {number}
    */
-  get priceDetail() {
-    return this.#priceDetail;
+  get totalPrice() {
+    return this.#totalPrice;
   }
 
   /**

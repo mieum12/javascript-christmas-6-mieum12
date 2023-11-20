@@ -1,5 +1,4 @@
 import Discounter from "./Discounter.js";
-import PriceDetail from "./PriceDetail.js";
 import OrderDto from "./dto/OrderDto.js";
 import RewardDetail from "./RewardDetail.js";
 import MenuItem from "./MenuItem.js";
@@ -24,9 +23,9 @@ class Order {
    */
   #menuItems;
   /**
-   * @type {PriceDetail}
+   * @type {number}
    */
-  #priceDetail;
+  #totalPrice;
   /**
    * @type {RewardDetail}
    */
@@ -48,7 +47,7 @@ class Order {
     this.#menuItems = menuItems;
 
     // 나머지 데이터는 비즈니스 로직을 통해 구하기
-    this.#priceDetail = new PriceDetail(menuItems.totalPrice);
+    this.#totalPrice = menuItems.totalPrice;
     this.#rewardDetail = new RewardDetail();
     // 아래에서 else대신 디폴트값 설정, null도 되지만 '없음'의 상태를 만들어 enum으로도 표현 가능
     // this.#rewardItem = null;
@@ -65,7 +64,7 @@ class Order {
   discount() {
     //할인 할 디스타운터에 정보를 주어 생성!
     const discounter = new Discounter(
-      this.#priceDetail.totalPrice,
+      this.#totalPrice,
       this.#day,
       this.#menuItems.menuItems,
       this.#rewardDetail,
@@ -79,7 +78,7 @@ class Order {
    * @description 2. 증정 메뉴 생성 - 메뉴에 샴페인 추가, 혜택 금액에도 추가
    */
   giveRewardItem() {
-    if (this.#priceDetail.totalPrice >= Order.MIN_DISCOUNTABLE_PRICE) {
+    if (this.#totalPrice >= Order.MIN_DISCOUNTABLE_PRICE) {
       //메뉴에 추가하기
       // [에러]
       const rewardItem = new MenuItem(Menu.샴페인, "샴페인", 1);
@@ -116,7 +115,7 @@ class Order {
       this.#menuItems.makeMenuItemsDto(),
       this.#rewardDetail.makeRewardDetailDto(),
       this.#rewardItem.makeMenuItemDto(),
-      this.#priceDetail.makePriceDetailDto(),
+      this.#totalPrice,
       this.giveEventBadge(),
     );
   }
